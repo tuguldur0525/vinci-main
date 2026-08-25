@@ -1,26 +1,51 @@
-# Vinci Showcase
+Vinci Shoes
 
-Read pasted_content.txt follow instructions to build Vinci show full - commerce website using following tech stack. I uploaded logos and instagram profile, and some model and store interior images .
+A modern e-commerce website for Vinci Shoes, a premium footwear brand in Mongolia.
 
-This project was built with [Lovable](https://lovable.dev).
+Features
 
-**Live app**: https://vinci-shop-studio.lovable.app
+* 🛍️ Product browsing & categories
+* 🛒 Shopping cart & checkout
+* 📦 Order management
+* 💳 Wire.mn payment integration
+* 🗄️ Supabase database
+* 📱 Responsive design
+* ⚡ Fast modern web experience
 
-## Build with Lovable
+Tech Stack
 
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/686c79a3-41a8-4abd-9919-ceb75c238549).
+* React + TypeScript
+* Vite
+* Tailwind CSS
+* Supabase
+* Wire.mn
+* Vercel
 
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
+Getting Started
 
-## Development
-
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
-
-```sh
-git clone <this-repository-url>
-cd <repository-name>
-npm i
+git clone https://github.com/tuguldur0525/vinci-main.git
+cd vinci-main
+npm install
 npm run dev
-```
+
+The development server will run locally.
+
+Environment Variables
+
+Create a .env file and configure the required Supabase and payment credentials.
+
+Never expose payment secrets in client-side code or commit them to GitHub.
+
+Deployment
+
+The website is deployed with Vercel.
+
+Live: https://vinci-shoes.vercel.app
+
+Project
+
+Vinci Shoes — Premium footwear e-commerce experience built for the Mongolian market.
+
+⸻
+
+Built with ❤️ by Tuguldur Turmunkh
