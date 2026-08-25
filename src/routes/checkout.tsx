@@ -147,7 +147,7 @@ function Checkout() {
       <h1 className="font-display text-5xl md:text-6xl">Checkout</h1>
 
       <div className="mt-10 grid gap-14 lg:grid-cols-[1.2fr_1fr]">
-        <form onSubmit={submit} className="space-y-5">
+        <form onSubmit={submit} className="order-2 space-y-5 lg:order-1">
           <p className="eyebrow text-muted-foreground">Delivery details</p>
           <Field
             label="Full name"
@@ -222,7 +222,7 @@ function Checkout() {
           </p>
         </form>
 
-        <aside className="border-t pt-8 lg:border-l lg:border-t-0 lg:pl-12 lg:pt-0">
+        <aside className="order-1 border-t pt-8 lg:order-2 lg:border-l lg:border-t-0 lg:pl-12 lg:pt-0">
           <p className="eyebrow text-muted-foreground">Your bag</p>
           <ul className="mt-6 space-y-5">
             {lines.map((l) => (

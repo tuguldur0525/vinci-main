@@ -30,6 +30,7 @@ function Auth() {
   const [name, setName] = useState("");
   const [busy, setBusy] = useState(false);
   const [orderReference, setOrderReference] = useState("");
+  const [orderPhone, setOrderPhone] = useState("");
   const [trackingBusy, setTrackingBusy] = useState(false);
   const [trackedOrder, setTrackedOrder] = useState<TrackedOrder | null>(null);
   const [trackingError, setTrackingError] = useState("");
@@ -85,13 +86,22 @@ function Auth() {
     setTrackingError("");
 
     const reference = orderReference.trim().replace(/^#/, "");
-    if (!/^[a-f\d]{8}$/i.test(reference)) {
-      setTrackingError("Enter the 8-character order number from your confirmation.");
+    const phone = orderPhone.trim();
+    if (!reference && !phone) {
+      setTrackingError("Enter an order number or phone number.");
+      setTrackingBusy(false);
+      return;
+    }
+    if (reference && !/^[a-f\d]{8}$/i.test(reference)) {
+      setTrackingError("Enter a valid 8-character order number.");
       setTrackingBusy(false);
       return;
     }
 
-    const { data, error } = await supabase.rpc("track_order", { order_reference: reference });
+    const { data, error } = await supabase.rpc("track_order", {
+      order_reference: reference,
+      order_phone: phone,
+    });
     if (error || !data?.[0]) {
       setTrackingError("We couldn't find that order. Check the number and try again.");
     } else {
@@ -165,6 +175,7 @@ function Auth() {
 
 export function TrackOrderForm({ embedded = false }: { embedded?: boolean }) {
   const [orderReference, setOrderReference] = useState("");
+  const [orderPhone, setOrderPhone] = useState("");
   const [trackingBusy, setTrackingBusy] = useState(false);
   const [trackedOrder, setTrackedOrder] = useState<TrackedOrder | null>(null);
   const [trackingError, setTrackingError] = useState("");
@@ -176,13 +187,22 @@ export function TrackOrderForm({ embedded = false }: { embedded?: boolean }) {
     setTrackingError("");
 
     const reference = orderReference.trim().replace(/^#/, "");
-    if (!/^[a-f\d]{8}$/i.test(reference)) {
-      setTrackingError("Enter the 8-character order number from your confirmation.");
+    const phone = orderPhone.trim();
+    if (!reference && !phone) {
+      setTrackingError("Enter an order number or phone number.");
+      setTrackingBusy(false);
+      return;
+    }
+    if (reference && !/^[a-f\d]{8}$/i.test(reference)) {
+      setTrackingError("Enter a valid 8-character order number.");
       setTrackingBusy(false);
       return;
     }
 
-    const { data, error } = await supabase.rpc("track_order", { order_reference: reference });
+    const { data, error } = await supabase.rpc("track_order", {
+      order_reference: reference,
+      order_phone: phone,
+    });
     if (error || !data?.[0]) {
       setTrackingError("We couldn't find that order. Check the number and try again.");
     } else {
@@ -198,7 +218,7 @@ export function TrackOrderForm({ embedded = false }: { embedded?: boolean }) {
       <span className="eyebrow text-primary">Guest access</span>
       <h2 className="mt-3 font-display text-3xl">Track your order</h2>
       <p className="mt-3 text-sm leading-6 text-muted-foreground">
-        Enter the order number from your confirmation. No sign in required.
+        Enter either your order number or phone number. No sign in required.
       </p>
 
       <form onSubmit={trackOrder} className="mt-6 space-y-3">
@@ -210,10 +230,25 @@ export function TrackOrderForm({ embedded = false }: { embedded?: boolean }) {
           inputMode="text"
           autoCapitalize="characters"
           maxLength={9}
-          placeholder="#B449A986"
+          placeholder="Order number, e.g. #B449A986"
           value={orderReference}
           onChange={(e) => setOrderReference(e.target.value.toUpperCase())}
           className="w-full border border-input bg-background px-4 py-3 text-sm uppercase outline-none focus:border-primary"
+        />
+        <p className="text-center text-xs text-muted-foreground">or</p>
+        <label htmlFor="order-phone" className="sr-only">
+          Phone number
+        </label>
+        <input
+          id="order-phone"
+          type="tel"
+          inputMode="tel"
+          autoComplete="tel"
+          required
+          placeholder="Phone number used for the order"
+          value={orderPhone}
+          onChange={(e) => setOrderPhone(e.target.value)}
+          className="w-full border border-input bg-background px-4 py-3 text-sm outline-none focus:border-primary"
         />
         <button
           type="submit"

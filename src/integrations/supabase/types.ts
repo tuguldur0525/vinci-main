@@ -341,6 +341,19 @@ export type Database = {
         }
         Returns: boolean
       }
+      track_order: {
+        Args: {
+          order_phone: string
+          order_reference: string
+        }
+        Returns: {
+          order_reference: string
+          status: string
+          created_at: string
+          total: number
+          item_count: number
+        }[]
+      }
     }
     Enums: {
       app_role: "admin" | "customer"
