@@ -35,7 +35,7 @@ export const createWireCheckout = createServerFn({ method: "POST" })
       method: "POST",
       headers: { ...headers, "Idempotency-Key": `order_${order.id}` },
       body: JSON.stringify({
-        amount: Math.round(Number(order.total) * 100), // MNT minor units
+        amount: Math.round(Number(order.total)), // Vinci prices and Wire checkout use whole MNT
         currency: "MNT",
         allowed_operators: apiKey.startsWith("sk_test_") ? ["sandbox"] : undefined,
         description: `Vinci Shoes order ${order.id.slice(0, 8).toUpperCase()}`,
