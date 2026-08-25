@@ -1,0 +1,189 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * VINCI SHOES design system.
+ * Burgundy / white / plant-blue / ink, editorial serif + clean sans.
+ */
+
+@theme inline {
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 2px;
+  --radius-xl: 2px;
+  --radius-2xl: 2px;
+  --radius-3xl: 2px;
+  --radius-4xl: 2px;
+  --font-display: "Cormorant Garamond", Georgia, serif;
+  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-ink: var(--ink);
+  --color-ink-foreground: var(--ink-foreground);
+  --color-blue: var(--blue);
+  --color-blue-foreground: var(--blue-foreground);
+  --color-bone: var(--bone);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+:root {
+  --radius: 0px;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.16 0.01 30);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.16 0.01 30);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.16 0.01 30);
+  --primary: oklch(0.41 0.176 20.5);
+  --primary-foreground: oklch(0.995 0 0);
+  --secondary: oklch(0.965 0.004 60);
+  --secondary-foreground: oklch(0.16 0.01 30);
+  --muted: oklch(0.965 0.004 60);
+  --muted-foreground: oklch(0.5 0.01 40);
+  --accent: oklch(0.96 0.012 20);
+  --accent-foreground: oklch(0.41 0.176 20.5);
+  --destructive: oklch(0.55 0.21 27);
+  --destructive-foreground: oklch(0.99 0 0);
+  --border: oklch(0.905 0.004 60);
+  --input: oklch(0.88 0.004 60);
+  --ring: oklch(0.41 0.176 20.5);
+  --ink: oklch(0.14 0.005 40);
+  --ink-foreground: oklch(0.98 0 0);
+  --blue: oklch(0.44 0.108 242);
+  --blue-foreground: oklch(0.99 0 0);
+  --bone: oklch(0.972 0.006 80);
+  --sidebar: oklch(0.99 0 0);
+  --sidebar-foreground: oklch(0.16 0.01 30);
+  --sidebar-primary: oklch(0.41 0.176 20.5);
+  --sidebar-primary-foreground: oklch(0.995 0 0);
+  --sidebar-accent: oklch(0.96 0.012 20);
+  --sidebar-accent-foreground: oklch(0.41 0.176 20.5);
+  --sidebar-border: oklch(0.905 0.004 60);
+  --sidebar-ring: oklch(0.41 0.176 20.5);
+}
+
+.dark {
+  --background: oklch(0.14 0.005 40);
+  --foreground: oklch(0.98 0 0);
+  --card: oklch(0.18 0.006 30);
+  --card-foreground: oklch(0.98 0 0);
+  --popover: oklch(0.18 0.006 30);
+  --popover-foreground: oklch(0.98 0 0);
+  --primary: oklch(0.52 0.19 20.5);
+  --primary-foreground: oklch(0.99 0 0);
+  --secondary: oklch(0.24 0.008 30);
+  --secondary-foreground: oklch(0.98 0 0);
+  --muted: oklch(0.24 0.008 30);
+  --muted-foreground: oklch(0.7 0.01 40);
+  --accent: oklch(0.28 0.03 20);
+  --accent-foreground: oklch(0.98 0 0);
+  --destructive: oklch(0.6 0.2 27);
+  --destructive-foreground: oklch(0.99 0 0);
+  --border: oklch(1 0 0 / 12%);
+  --input: oklch(1 0 0 / 18%);
+  --ring: oklch(0.52 0.19 20.5);
+  --ink: oklch(0.1 0.005 40);
+  --ink-foreground: oklch(0.98 0 0);
+  --blue: oklch(0.5 0.11 242);
+  --blue-foreground: oklch(0.99 0 0);
+  --bone: oklch(0.2 0.006 60);
+  --sidebar: oklch(0.18 0.006 30);
+  --sidebar-foreground: oklch(0.98 0 0);
+  --sidebar-primary: oklch(0.52 0.19 20.5);
+  --sidebar-primary-foreground: oklch(0.99 0 0);
+  --sidebar-accent: oklch(0.28 0.03 20);
+  --sidebar-accent-foreground: oklch(0.98 0 0);
+  --sidebar-border: oklch(1 0 0 / 12%);
+  --sidebar-ring: oklch(0.52 0.19 20.5);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  .font-display {
+    font-family: var(--font-display);
+    font-weight: 300;
+  }
+}
+
+/* Editorial eyebrow label */
+@utility eyebrow {
+  font-size: 0.6875rem;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+/* Subtle white grid, as on the store's tiled walls */
+@utility grid-lines {
+  background-image:
+    linear-gradient(to right, color-mix(in oklab, white 12%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in oklab, white 12%, transparent) 1px, transparent 1px);
+  background-size: 46px 46px;
+}
+
+@utility grid-lines-ink {
+  background-image:
+    linear-gradient(to right, color-mix(in oklab, black 6%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in oklab, black 6%, transparent) 1px, transparent 1px);
+  background-size: 46px 46px;
+}
+
+@utility link-underline {
+  position: relative;
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -3px;
+    height: 1px;
+    width: 100%;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  &:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+}
