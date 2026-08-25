@@ -23,20 +23,52 @@ export function SiteFooter() {
           <div>
             <p className="eyebrow text-ink-foreground/50">Shop</p>
             <ul className="mt-5 space-y-3 text-sm">
-              <li><Link to="/shop" className="link-underline">New Arrivals</Link></li>
-              <li><Link to="/shop" className="link-underline">Shoes</Link></li>
-              <li><Link to="/collections" className="link-underline">Collections</Link></li>
+              <li>
+                <Link to="/shop" className="link-underline">
+                  New Arrivals
+                </Link>
+              </li>
+              <li>
+                <Link to="/shop" className="link-underline">
+                  Shoes
+                </Link>
+              </li>
+              <li>
+                <Link to="/collections" className="link-underline">
+                  Collections
+                </Link>
+              </li>
             </ul>
           </div>
 
           <div>
             <p className="eyebrow text-ink-foreground/50">House</p>
             <ul className="mt-5 space-y-3 text-sm">
-              <li><Link to="/about" className="link-underline">About Vinci</Link></li>
-              <li><Link to="/store" className="link-underline">Store</Link></li>
-              <li><Link to="/store" className="link-underline">Contact</Link></li>
-              <li><Link to="/shipping-returns" className="link-underline">Shipping &amp; Returns</Link></li>
-              <li><Link to="/privacy" className="link-underline">Privacy Policy</Link></li>
+              <li>
+                <Link to="/about" className="link-underline">
+                  About Vinci
+                </Link>
+              </li>
+              <li>
+                <Link to="/store" className="link-underline">
+                  Store
+                </Link>
+              </li>
+              <li>
+                <Link to="/store" className="link-underline">
+                  Contact
+                </Link>
+              </li>
+              <li>
+                <Link to="/shipping-returns" className="link-underline">
+                  Shipping &amp; Returns
+                </Link>
+              </li>
+              <li>
+                <Link to="/privacy" className="link-underline">
+                  Privacy Policy
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -54,7 +86,9 @@ export function SiteFooter() {
                 toast.success("Thank you — you're on the list.");
               }}
             >
-              <label htmlFor="newsletter" className="sr-only">Your email</label>
+              <label htmlFor="newsletter" className="sr-only">
+                Your email
+              </label>
               <input
                 id="newsletter"
                 type="email"
@@ -63,15 +97,28 @@ export function SiteFooter() {
                 placeholder="Your email"
                 className="w-full bg-transparent py-3 text-sm outline-none placeholder:text-ink-foreground/40"
               />
-              <button type="submit" className="eyebrow px-2 text-ink-foreground/80 hover:text-ink-foreground">
+              <button
+                type="submit"
+                className="eyebrow px-2 text-ink-foreground/80 hover:text-ink-foreground"
+              >
                 Subscribe
               </button>
             </form>
             <div className="mt-8 flex gap-6 text-sm">
-              <a href="https://instagram.com/vinci_shoes" target="_blank" rel="noreferrer" className="link-underline">
+              <a
+                href="https://instagram.com/vinci_shoes"
+                target="_blank"
+                rel="noreferrer"
+                className="link-underline"
+              >
                 Instagram
               </a>
-              <a href="https://facebook.com/vinci" target="_blank" rel="noreferrer" className="link-underline">
+              <a
+                href="https://facebook.com/Vinciofficial"
+                target="_blank"
+                rel="noreferrer"
+                className="link-underline"
+              >
                 Facebook
               </a>
             </div>
@@ -80,7 +127,9 @@ export function SiteFooter() {
 
         <div className="mt-16 flex flex-col gap-3 border-t border-ink-foreground/15 pt-6 text-xs text-ink-foreground/45 md:flex-row md:items-center md:justify-between">
           <p>© {new Date().getFullYear()} Vinci Shoes. Ulaanbaatar, Mongolia.</p>
-          <Link to="/admin" className="link-underline">Store admin</Link>
+          <Link to="/admin" className="link-underline">
+            Store admin
+          </Link>
         </div>
       </div>
     </footer>

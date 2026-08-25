@@ -75,12 +75,22 @@ function Store() {
           <p className="eyebrow mt-12 text-muted-foreground">Find us online</p>
           <ul className="mt-5 space-y-3 text-sm">
             <li>
-              <a href="https://instagram.com/vinci_shoes" target="_blank" rel="noreferrer" className="link-underline">
+              <a
+                href="https://instagram.com/vinci_shoes"
+                target="_blank"
+                rel="noreferrer"
+                className="link-underline"
+              >
                 Instagram — @vinci_shoes
               </a>
             </li>
             <li>
-              <a href="https://facebook.com/vinci" target="_blank" rel="noreferrer" className="link-underline">
+              <a
+                href="https://facebook.com/Vinciofficial"
+                target="_blank"
+                rel="noreferrer"
+                className="link-underline"
+              >
                 Facebook — Vinci
               </a>
             </li>

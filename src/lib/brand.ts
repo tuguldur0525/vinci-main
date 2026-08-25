@@ -1,17 +1,17 @@
-import campaignRedHeels from "@/assets/campaign-red-heels.png.asset.json";
-import campaignMirror from "@/assets/campaign-mirror.webp.asset.json";
-import campaignWhite from "@/assets/campaign-white.jpg.asset.json";
-import storeInterior from "@/assets/store-interior.png.asset.json";
-import flowerBurgundy from "@/assets/flower-burgundy.jpg.asset.json";
-import flowerLogo from "@/assets/flower-logo.jpg.asset.json";
+import campaignRedHeels from "@/assets/campaign-red-heels.png";
+import campaignMirror from "@/assets/campaign-mirror.jpg";
+import campaignWhite from "@/assets/campaign-white.jpg";
+import storeInterior from "@/assets/store-interior.jpeg";
+import flowerBurgundy from "@/assets/flower-burgundy.jpg";
+import flowerLogo from "@/assets/flower-logo.jpg";
 
 export const brandImages = {
-  campaignRedHeels: campaignRedHeels.url,
-  campaignMirror: campaignMirror.url,
-  campaignWhite: campaignWhite.url,
-  storeInterior: storeInterior.url,
-  flowerBurgundy: flowerBurgundy.url,
-  flowerLogo: flowerLogo.url,
+  campaignRedHeels: campaignRedHeels,
+  campaignMirror: campaignMirror,
+  campaignWhite: campaignWhite,
+  storeInterior: storeInterior,
+  flowerBurgundy: flowerBurgundy,
+  flowerLogo: flowerLogo,
 };
 
 export const SITE_URL = "https://vinci-shoes.lovable.app";
