@@ -12,7 +12,10 @@ export const Route = createFileRoute("/checkout")({
   head: () => ({
     meta: [
       { title: "Checkout — Vinci Shoes" },
-      { name: "description", content: "Complete your Vinci order with delivery in Ulaanbaatar and across Mongolia." },
+      {
+        name: "description",
+        content: "Complete your Vinci order with delivery in Ulaanbaatar and across Mongolia.",
+      },
       { property: "og:title", content: "Checkout — Vinci Shoes" },
       { property: "og:description", content: "Complete your Vinci order." },
       { name: "robots", content: "noindex" },
@@ -41,8 +44,9 @@ function Checkout() {
   });
 
   const total = subtotal + (lines.length ? DELIVERY_FEE : 0);
-  const set = (k: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
-    setForm((f) => ({ ...f, [k]: e.target.value }));
+  const set =
+    (k: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+      setForm((f) => ({ ...f, [k]: e.target.value }));
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -108,8 +112,9 @@ function Checkout() {
         <span className="eyebrow text-primary">Order received</span>
         <h1 className="mt-4 font-display text-5xl">Thank you.</h1>
         <p className="mt-5 text-sm text-muted-foreground">
-          Your order reference is <span className="text-foreground">{done.slice(0, 8).toUpperCase()}</span>.
-          Our team will call you shortly to confirm delivery. Payment is on delivery or by bank transfer.
+          Your order reference is{" "}
+          <span className="text-foreground">#{done.slice(0, 8).toUpperCase()}</span>. Our team will
+          call you shortly to confirm delivery. Payment is on delivery or by bank transfer.
         </p>
         <button
           onClick={() => navigate({ to: "/shop" })}
@@ -125,7 +130,10 @@ function Checkout() {
     return (
       <div className="mx-auto max-w-xl px-5 py-32 text-center">
         <h1 className="font-display text-5xl">Your bag is empty.</h1>
-        <Link to="/shop" className="eyebrow mt-10 inline-block bg-primary px-10 py-4 text-primary-foreground">
+        <Link
+          to="/shop"
+          className="eyebrow mt-10 inline-block bg-primary px-10 py-4 text-primary-foreground"
+        >
           Shop the collection
         </Link>
       </div>
@@ -139,7 +147,12 @@ function Checkout() {
       <div className="mt-10 grid gap-14 lg:grid-cols-[1.2fr_1fr]">
         <form onSubmit={submit} className="space-y-5">
           <p className="eyebrow text-muted-foreground">Delivery details</p>
-          <Field label="Full name" required value={form.customer_name} onChange={set("customer_name")} />
+          <Field
+            label="Full name"
+            required
+            value={form.customer_name}
+            onChange={set("customer_name")}
+          />
           <Field label="Phone" required value={form.phone} onChange={set("phone")} />
           <Field label="Email (optional)" type="email" value={form.email} onChange={set("email")} />
           <Field label="District / khoroo" value={form.district} onChange={set("district")} />
@@ -167,7 +180,9 @@ function Checkout() {
                   type="button"
                   onClick={() => setPayment(opt.id)}
                   className={`border p-4 text-left transition-colors ${
-                    payment === opt.id ? "border-primary text-primary" : "border-input hover:border-foreground"
+                    payment === opt.id
+                      ? "border-primary text-primary"
+                      : "border-input hover:border-foreground"
                   }`}
                 >
                   <span className="block text-sm">{opt.title}</span>
@@ -192,7 +207,11 @@ function Checkout() {
             disabled={submitting}
             className="eyebrow w-full bg-primary py-5 text-primary-foreground transition-colors hover:bg-ink disabled:opacity-60"
           >
-            {submitting ? "Placing order…" : payment === "wire" ? "Place order & pay" : "Place order"}
+            {submitting
+              ? "Placing order…"
+              : payment === "wire"
+                ? "Place order & pay"
+                : "Place order"}
           </button>
           <p className="text-xs text-muted-foreground">
             Pay on delivery, or online through Wire (QR and Mongolian bank apps). We call every

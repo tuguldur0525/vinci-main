@@ -207,10 +207,10 @@ function Home() {
         </div>
         <div className="mt-10 grid grid-cols-2 gap-2 md:grid-cols-4">
           {[
-            brandImages.campaignRedHeels,
             brandImages.storeInterior,
             brandImages.campaignMirror,
             brandImages.campaignWhite,
+            brandImages.campaignRedHeels,
           ].map((src) => (
             <a
               key={src}
