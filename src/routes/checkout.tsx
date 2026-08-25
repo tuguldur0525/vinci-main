@@ -51,30 +51,32 @@ function Checkout() {
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     if (!lines.length) return;
+    if (
+      !form.customer_name.trim() ||
+      !form.phone.trim() ||
+      !form.district.trim() ||
+      !form.address.trim()
+    ) {
+      toast.error("Please complete your name, phone, district / khoroo, and address.");
+      return;
+    }
     setSubmitting(true);
     try {
-      const { data: order, error } = await supabase
-        .from("orders")
-        .insert({
-          user_id: user?.id ?? null,
-          customer_name: form.customer_name,
-          phone: form.phone,
-          email: form.email || null,
-          address: form.address,
-          district: form.district || null,
-          notes: form.notes || null,
-          subtotal,
-          delivery_fee: DELIVERY_FEE,
-          total,
-          payment_method: payment,
-        })
-        .select("id")
-        .single();
-      if (error) throw error;
-
-      const { error: itemsError } = await supabase.from("order_items").insert(
-        lines.map((l) => ({
-          order_id: order.id,
+      const orderId = crypto.randomUUID();
+      const { error } = await supabase.rpc("place_order", {
+        p_order_id: orderId,
+        p_user_id: user?.id ?? null,
+        p_customer_name: form.customer_name,
+        p_phone: form.phone,
+        p_email: form.email || null,
+        p_address: form.address,
+        p_district: form.district || null,
+        p_notes: form.notes || null,
+        p_subtotal: subtotal,
+        p_delivery_fee: DELIVERY_FEE,
+        p_total: total,
+        p_payment_method: payment,
+        p_items: lines.map((l) => ({
           product_id: l.productId,
           product_name: l.name,
           image_url: l.image,
@@ -83,12 +85,12 @@ function Checkout() {
           quantity: l.quantity,
           price: l.price,
         })),
-      );
-      if (itemsError) throw itemsError;
+      });
+      if (error) throw error;
 
       if (payment === "wire") {
         const res = await startWire({
-          data: { orderId: order.id, returnUrl: `${window.location.origin}/account` },
+          data: { orderId, returnUrl: `${window.location.origin}/account` },
         });
         clear();
         if (res.url) {
@@ -98,7 +100,7 @@ function Checkout() {
       }
 
       clear();
-      setDone(order.id);
+      setDone(orderId);
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "We couldn't place your order.");
     } finally {
@@ -155,7 +157,12 @@ function Checkout() {
           />
           <Field label="Phone" required value={form.phone} onChange={set("phone")} />
           <Field label="Email (optional)" type="email" value={form.email} onChange={set("email")} />
-          <Field label="District / khoroo" value={form.district} onChange={set("district")} />
+          <Field
+            label="District / khoroo"
+            required
+            value={form.district}
+            onChange={set("district")}
+          />
           <Field label="Address" required value={form.address} onChange={set("address")} />
           <div>
             <label className="eyebrow text-muted-foreground">Notes</label>

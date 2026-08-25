@@ -19,6 +19,7 @@ import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as ShippingReturnsRouteImport } from './routes/shipping-returns'
 import { Route as ShopRouteImport } from './routes/shop'
 import { Route as StoreRouteImport } from './routes/store'
+import { Route as TrackOrderRouteImport } from './routes/track-order'
 import { Route as CollectionsIndexRouteImport } from './routes/collections.index'
 import { Route as CollectionsSlugRouteImport } from './routes/collections.$slug'
 import { Route as ProductsSlugRouteImport } from './routes/products.$slug'
@@ -74,6 +75,11 @@ const StoreRoute = StoreRouteImport.update({
   path: '/store',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TrackOrderRoute = TrackOrderRouteImport.update({
+  id: '/track-order',
+  path: '/track-order',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CollectionsIndexRoute = CollectionsIndexRouteImport.update({
   id: '/collections/',
   path: '/collections/',
@@ -106,6 +112,7 @@ export interface FileRoutesByFullPath {
   '/shipping-returns': typeof ShippingReturnsRoute
   '/shop': typeof ShopRoute
   '/store': typeof StoreRoute
+  '/track-order': typeof TrackOrderRoute
   '/collections/$slug': typeof CollectionsSlugRoute
   '/products/$slug': typeof ProductsSlugRoute
   '/collections/': typeof CollectionsIndexRoute
@@ -122,6 +129,7 @@ export interface FileRoutesByTo {
   '/shipping-returns': typeof ShippingReturnsRoute
   '/shop': typeof ShopRoute
   '/store': typeof StoreRoute
+  '/track-order': typeof TrackOrderRoute
   '/collections/$slug': typeof CollectionsSlugRoute
   '/products/$slug': typeof ProductsSlugRoute
   '/collections': typeof CollectionsIndexRoute
@@ -139,6 +147,7 @@ export interface FileRoutesById {
   '/shipping-returns': typeof ShippingReturnsRoute
   '/shop': typeof ShopRoute
   '/store': typeof StoreRoute
+  '/track-order': typeof TrackOrderRoute
   '/collections/$slug': typeof CollectionsSlugRoute
   '/products/$slug': typeof ProductsSlugRoute
   '/collections/': typeof CollectionsIndexRoute
@@ -157,6 +166,7 @@ export interface FileRouteTypes {
     | '/shipping-returns'
     | '/shop'
     | '/store'
+    | '/track-order'
     | '/collections/$slug'
     | '/products/$slug'
     | '/collections/'
@@ -173,6 +183,7 @@ export interface FileRouteTypes {
     | '/shipping-returns'
     | '/shop'
     | '/store'
+    | '/track-order'
     | '/collections/$slug'
     | '/products/$slug'
     | '/collections'
@@ -189,6 +200,7 @@ export interface FileRouteTypes {
     | '/shipping-returns'
     | '/shop'
     | '/store'
+    | '/track-order'
     | '/collections/$slug'
     | '/products/$slug'
     | '/collections/'
@@ -206,6 +218,7 @@ export interface RootRouteChildren {
   ShippingReturnsRoute: typeof ShippingReturnsRoute
   ShopRoute: typeof ShopRoute
   StoreRoute: typeof StoreRoute
+  TrackOrderRoute: typeof TrackOrderRoute
   CollectionsSlugRoute: typeof CollectionsSlugRoute
   ProductsSlugRoute: typeof ProductsSlugRoute
   CollectionsIndexRoute: typeof CollectionsIndexRoute
@@ -284,6 +297,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StoreRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/track-order': {
+      id: '/track-order'
+      path: '/track-order'
+      fullPath: '/track-order'
+      preLoaderRoute: typeof TrackOrderRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/collections/': {
       id: '/collections/'
       path: '/collections'
@@ -326,6 +346,7 @@ const rootRouteChildren: RootRouteChildren = {
   ShippingReturnsRoute: ShippingReturnsRoute,
   ShopRoute: ShopRoute,
   StoreRoute: StoreRoute,
+  TrackOrderRoute: TrackOrderRoute,
   CollectionsSlugRoute: CollectionsSlugRoute,
   ProductsSlugRoute: ProductsSlugRoute,
   CollectionsIndexRoute: CollectionsIndexRoute,

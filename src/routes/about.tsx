@@ -21,10 +21,10 @@ export const Route = createFileRoute("/about")({
 function About() {
   return (
     <>
-      <section className="relative bg-ink text-ink-foreground">
+      <section className="relative bg-primary text-ink-foreground">
         <div className="pointer-events-none absolute inset-0 grid-lines opacity-30" />
         <div className="relative mx-auto max-w-[1600px] px-5 py-24 md:px-10 md:py-36">
-          <Flower className="h-10 w-10 text-primary" />
+          <Flower className="h-10 w-10 text-popover" />
           <h1 className="mt-8 font-display text-6xl leading-[0.95] md:text-8xl">
             Vinci
             <br />
@@ -66,9 +66,15 @@ function About() {
       <section className="bg-primary text-primary-foreground">
         <div className="mx-auto grid max-w-[1600px] gap-10 px-5 py-20 md:grid-cols-3 md:px-10 md:py-28">
           {[
-            { t: "Craftsmanship", d: "Full-grain and patent leathers, leather linings, finished by hand." },
+            {
+              t: "Craftsmanship",
+              d: "Full-grain and patent leathers, leather linings, finished by hand.",
+            },
             { t: "Confidence", d: "Heels engineered around balance, so posture comes free." },
-            { t: "Individuality", d: "Small runs, considered colours, never the same shoe as everyone else." },
+            {
+              t: "Individuality",
+              d: "Small runs, considered colours, never the same shoe as everyone else.",
+            },
           ].map((item) => (
             <div key={item.t}>
               <Flower className="h-6 w-6 text-primary-foreground/70" />

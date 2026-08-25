@@ -37,15 +37,15 @@ export const Route = createFileRoute("/admin")({
   component: Admin,
 });
 
-const STATUSES = [
-  "new",
-  "confirmed",
-  "processing",
-  "shipped",
-  "completed",
-  "cancelled",
-] as const;
+const STATUSES = ["new", "confirmed", "processing", "shipped", "completed", "cancelled"] as const;
 type OrderStatus = (typeof STATUSES)[number];
+const ORDER_RANGES = [
+  { value: "1-day", label: "1 day", days: 1 },
+  { value: "7-day", label: "7 days", days: 7 },
+  { value: "month", label: "Month", days: 30 },
+  { value: "all-time", label: "All time", days: null },
+] as const;
+type OrderRange = (typeof ORDER_RANGES)[number]["value"];
 
 const SIZES = ["35", "36", "37", "38", "39", "40"];
 
@@ -61,6 +61,7 @@ function Admin() {
   const { loading, user, isAdmin } = useAuth();
   const navigate = useNavigate();
   const qc = useQueryClient();
+  const [orderRange, setOrderRange] = useState<OrderRange>("all-time");
 
   useEffect(() => {
     if (!loading && !user) navigate({ to: "/auth" });
@@ -113,7 +114,14 @@ function Admin() {
     );
   }
 
-  const revenue = (orders.data ?? [])
+  const selectedRange = ORDER_RANGES.find((range) => range.value === orderRange)!;
+  const visibleOrders = (orders.data ?? []).filter((order) => {
+    if (selectedRange.days === null) return true;
+    const start = Date.now() - selectedRange.days * 24 * 60 * 60 * 1000;
+    return new Date(order.created_at).getTime() >= start;
+  });
+
+  const revenue = visibleOrders
     .filter((o) => o.status !== "cancelled")
     .reduce((s, o) => s + Number(o.total), 0);
 
@@ -128,7 +136,7 @@ function Admin() {
 
       <div className="mt-10 grid gap-4 sm:grid-cols-4">
         <Stat label="Products" value={String(products.data?.length ?? 0)} />
-        <Stat label="Orders" value={String(orders.data?.length ?? 0)} />
+        <Stat label="Orders" value={String(visibleOrders.length)} />
         <Stat label="Revenue" value={formatMnt(revenue)} />
         <Stat label="Low stock" value={String(lowStock.length)} />
       </div>
@@ -141,7 +149,25 @@ function Admin() {
         </TabsList>
 
         <TabsContent value="orders" className="mt-8 space-y-4">
-          {(orders.data ?? []).map((o) => (
+          <div className="flex flex-wrap items-center justify-between gap-4 border-b pb-5">
+            <p className="eyebrow text-muted-foreground">Order history</p>
+            <Select
+              value={orderRange}
+              onValueChange={(value) => setOrderRange(value as OrderRange)}
+            >
+              <SelectTrigger className="w-40">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {ORDER_RANGES.map((range) => (
+                  <SelectItem key={range.value} value={range.value}>
+                    {range.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          {visibleOrders.map((o) => (
             <div key={o.id} className="border p-6">
               <div className="flex flex-wrap items-center justify-between gap-4">
                 <div>
@@ -184,8 +210,12 @@ function Admin() {
               </ul>
             </div>
           ))}
-          {!orders.isLoading && (orders.data?.length ?? 0) === 0 && (
-            <p className="text-sm text-muted-foreground">No orders yet.</p>
+          {!orders.isLoading && visibleOrders.length === 0 && (
+            <p className="text-sm text-muted-foreground">
+              {orderRange === "all-time"
+                ? "No orders yet."
+                : `No orders in the last ${selectedRange.label.toLowerCase()}.`}
+            </p>
           )}
         </TabsContent>
 
@@ -283,9 +313,17 @@ function ProductRow({
         <div className="grid gap-8 border-t p-5 lg:grid-cols-2">
           <div className="space-y-3">
             <p className="eyebrow text-muted-foreground">Details</p>
-            <Input label="Name" value={details.name} onChange={(v) => setDetails({ ...details, name: v })} />
+            <Input
+              label="Name"
+              value={details.name}
+              onChange={(v) => setDetails({ ...details, name: v })}
+            />
             <div className="grid grid-cols-2 gap-3">
-              <Input label="Price" value={details.price} onChange={(v) => setDetails({ ...details, price: v })} />
+              <Input
+                label="Price"
+                value={details.price}
+                onChange={(v) => setDetails({ ...details, price: v })}
+              />
               <Input
                 label="Sale price"
                 value={details.sale_price}
@@ -303,7 +341,11 @@ function ProductRow({
                 value={details.material}
                 onChange={(v) => setDetails({ ...details, material: v })}
               />
-              <Input label="Care" value={details.care} onChange={(v) => setDetails({ ...details, care: v })} />
+              <Input
+                label="Care"
+                value={details.care}
+                onChange={(v) => setDetails({ ...details, care: v })}
+              />
             </div>
             <div className="flex flex-wrap gap-3 pt-1">
               <Toggle
@@ -577,7 +619,15 @@ function NewProduct({
       }
 
       toast.success("Product created.");
-      setForm({ name: "", price: "", description: "", category_id: "", image_url: "", colors: "", stock: "5" });
+      setForm({
+        name: "",
+        price: "",
+        description: "",
+        category_id: "",
+        image_url: "",
+        colors: "",
+        stock: "5",
+      });
       onCreated();
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Could not create the product.");
@@ -590,7 +640,11 @@ function NewProduct({
     <div className="max-w-xl space-y-3 border p-6">
       <p className="eyebrow text-muted-foreground">New product</p>
       <Input label="Name" value={form.name} onChange={(v) => setForm({ ...form, name: v })} />
-      <Input label="Price (₮)" value={form.price} onChange={(v) => setForm({ ...form, price: v })} />
+      <Input
+        label="Price (₮)"
+        value={form.price}
+        onChange={(v) => setForm({ ...form, price: v })}
+      />
       <Input
         label="Description"
         value={form.description}

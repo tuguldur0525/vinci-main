@@ -28,41 +28,23 @@ export function SiteHeader() {
 
   return (
     <>
-    <header
-      className={cn(
-        "sticky top-0 z-50 border-b bg-background/95 backdrop-blur transition-shadow",
-        scrolled ? "border-border shadow-[0_1px_0_0_var(--border)]" : "border-transparent",
-      )}
-    >
-      <div className="mx-auto flex h-16 max-w-[1600px] items-center justify-between px-5 md:h-20 md:px-10">
+      <header
+        className={cn(
+          "sticky top-0 z-50 border-b bg-background/95 backdrop-blur transition-shadow",
+          scrolled ? "border-border shadow-[0_1px_0_0_var(--border)]" : "border-transparent",
+        )}
+      >
+        <div className="mx-auto flex h-16 max-w-[1600px] items-center justify-between px-5 md:h-20 md:px-10">
+          <button
+            className="-ml-1 p-1 md:hidden"
+            aria-label="Open menu"
+            onClick={() => setMenuOpen(true)}
+          >
+            <Menu className="h-5 w-5" />
+          </button>
 
-        <button
-          className="-ml-1 p-1 md:hidden"
-          aria-label="Open menu"
-          onClick={() => setMenuOpen(true)}
-        >
-          <Menu className="h-5 w-5" />
-        </button>
-
-        <nav className="hidden flex-1 items-center gap-8 md:flex">
-          {NAV.slice(0, 3).map((item) => (
-            <Link
-              key={item.label}
-              to={item.to}
-              className="eyebrow link-underline text-foreground/80 hover:text-foreground"
-            >
-              {item.label}
-            </Link>
-          ))}
-        </nav>
-
-        <Link to="/" aria-label="Vinci Shoes home" className="md:absolute md:left-1/2 md:-translate-x-1/2">
-          <Wordmark className="text-primary" />
-        </Link>
-
-        <div className="flex flex-1 items-center justify-end gap-5">
-          <nav className="hidden items-center gap-8 lg:flex">
-            {NAV.slice(3).map((item) => (
+          <nav className="hidden flex-1 items-center gap-8 md:flex">
+            {NAV.slice(0, 3).map((item) => (
               <Link
                 key={item.label}
                 to={item.to}
@@ -72,22 +54,47 @@ export function SiteHeader() {
               </Link>
             ))}
           </nav>
-          <Link to="/shop" aria-label="Search shoes" className="hidden p-1 sm:block">
-            <Search className="h-[18px] w-[18px]" />
+
+          <Link
+            to="/"
+            aria-label="Vinci Shoes home"
+            className="md:absolute md:left-1/2 md:-translate-x-1/2"
+          >
+            <Wordmark className="text-primary" />
           </Link>
-          <Link to="/auth" aria-label="Account" className="hidden p-1 sm:block">
-            <User className="h-[18px] w-[18px]" />
-          </Link>
-          <button onClick={open} aria-label={`Shopping bag, ${count} items`} className="relative p-1">
-            <ShoppingBag className="h-[18px] w-[18px]" />
-            {count > 0 && (
-              <span className="absolute -right-1.5 -top-1 flex h-4 min-w-4 items-center justify-center bg-primary px-1 text-[10px] font-medium text-primary-foreground">
-                {count}
-              </span>
-            )}
-          </button>
+
+          <div className="flex flex-1 items-center justify-end gap-5">
+            <nav className="hidden items-center gap-8 lg:flex">
+              {NAV.slice(3).map((item) => (
+                <Link
+                  key={item.label}
+                  to={item.to}
+                  className="eyebrow link-underline text-foreground/80 hover:text-foreground"
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </nav>
+            <Link to="/shop" aria-label="Search shoes" className="hidden p-1 sm:block">
+              <Search className="h-[18px] w-[18px]" />
+            </Link>
+            <Link to="/auth" aria-label="Account" className="hidden p-1 sm:block">
+              <User className="h-[18px] w-[18px]" />
+            </Link>
+            <button
+              onClick={open}
+              aria-label={`Shopping bag, ${count} items`}
+              className="relative p-1"
+            >
+              <ShoppingBag className="h-[18px] w-[18px]" />
+              {count > 0 && (
+                <span className="absolute -right-1.5 -top-1 flex h-4 min-w-4 items-center justify-center bg-primary px-1 text-[10px] font-medium text-primary-foreground">
+                  {count}
+                </span>
+              )}
+            </button>
+          </div>
         </div>
-      </div>
       </header>
 
       <AnimatePresence>
@@ -97,7 +104,6 @@ export function SiteHeader() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-[100] overflow-y-auto bg-background text-foreground md:hidden"
-
           >
             <div className="flex h-16 items-center justify-between px-5">
               <Wordmark className="text-primary" />
@@ -129,6 +135,13 @@ export function SiteHeader() {
               >
                 Account
               </Link>
+              <Link
+                to="/track-order"
+                onClick={() => setMenuOpen(false)}
+                className="eyebrow mt-5 text-muted-foreground"
+              >
+                Track order
+              </Link>
             </nav>
           </motion.div>
         )}
@@ -136,4 +149,3 @@ export function SiteHeader() {
     </>
   );
 }
-
