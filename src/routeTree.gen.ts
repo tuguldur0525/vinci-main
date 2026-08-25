@@ -22,6 +22,8 @@ import { Route as StoreRouteImport } from './routes/store'
 import { Route as TrackOrderRouteImport } from './routes/track-order'
 import { Route as CollectionsIndexRouteImport } from './routes/collections.index'
 import { Route as CollectionsSlugRouteImport } from './routes/collections.$slug'
+import { Route as PaymentCancelRouteImport } from './routes/payment.cancel'
+import { Route as PaymentSuccessRouteImport } from './routes/payment.success'
 import { Route as ProductsSlugRouteImport } from './routes/products.$slug'
 import { Route as ApiPublicWireWebhookRouteImport } from './routes/api/public/wire-webhook'
 
@@ -90,6 +92,16 @@ const CollectionsSlugRoute = CollectionsSlugRouteImport.update({
   path: '/collections/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PaymentCancelRoute = PaymentCancelRouteImport.update({
+  id: '/payment/cancel',
+  path: '/payment/cancel',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PaymentSuccessRoute = PaymentSuccessRouteImport.update({
+  id: '/payment/success',
+  path: '/payment/success',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProductsSlugRoute = ProductsSlugRouteImport.update({
   id: '/products/$slug',
   path: '/products/$slug',
@@ -114,6 +126,8 @@ export interface FileRoutesByFullPath {
   '/store': typeof StoreRoute
   '/track-order': typeof TrackOrderRoute
   '/collections/$slug': typeof CollectionsSlugRoute
+  '/payment/cancel': typeof PaymentCancelRoute
+  '/payment/success': typeof PaymentSuccessRoute
   '/products/$slug': typeof ProductsSlugRoute
   '/collections/': typeof CollectionsIndexRoute
   '/api/public/wire-webhook': typeof ApiPublicWireWebhookRoute
@@ -131,6 +145,8 @@ export interface FileRoutesByTo {
   '/store': typeof StoreRoute
   '/track-order': typeof TrackOrderRoute
   '/collections/$slug': typeof CollectionsSlugRoute
+  '/payment/cancel': typeof PaymentCancelRoute
+  '/payment/success': typeof PaymentSuccessRoute
   '/products/$slug': typeof ProductsSlugRoute
   '/collections': typeof CollectionsIndexRoute
   '/api/public/wire-webhook': typeof ApiPublicWireWebhookRoute
@@ -149,6 +165,8 @@ export interface FileRoutesById {
   '/store': typeof StoreRoute
   '/track-order': typeof TrackOrderRoute
   '/collections/$slug': typeof CollectionsSlugRoute
+  '/payment/cancel': typeof PaymentCancelRoute
+  '/payment/success': typeof PaymentSuccessRoute
   '/products/$slug': typeof ProductsSlugRoute
   '/collections/': typeof CollectionsIndexRoute
   '/api/public/wire-webhook': typeof ApiPublicWireWebhookRoute
@@ -168,6 +186,8 @@ export interface FileRouteTypes {
     | '/store'
     | '/track-order'
     | '/collections/$slug'
+    | '/payment/cancel'
+    | '/payment/success'
     | '/products/$slug'
     | '/collections/'
     | '/api/public/wire-webhook'
@@ -185,6 +205,8 @@ export interface FileRouteTypes {
     | '/store'
     | '/track-order'
     | '/collections/$slug'
+    | '/payment/cancel'
+    | '/payment/success'
     | '/products/$slug'
     | '/collections'
     | '/api/public/wire-webhook'
@@ -202,6 +224,8 @@ export interface FileRouteTypes {
     | '/store'
     | '/track-order'
     | '/collections/$slug'
+    | '/payment/cancel'
+    | '/payment/success'
     | '/products/$slug'
     | '/collections/'
     | '/api/public/wire-webhook'
@@ -220,6 +244,8 @@ export interface RootRouteChildren {
   StoreRoute: typeof StoreRoute
   TrackOrderRoute: typeof TrackOrderRoute
   CollectionsSlugRoute: typeof CollectionsSlugRoute
+  PaymentCancelRoute: typeof PaymentCancelRoute
+  PaymentSuccessRoute: typeof PaymentSuccessRoute
   ProductsSlugRoute: typeof ProductsSlugRoute
   CollectionsIndexRoute: typeof CollectionsIndexRoute
   ApiPublicWireWebhookRoute: typeof ApiPublicWireWebhookRoute
@@ -318,6 +344,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CollectionsSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/payment/cancel': {
+      id: '/payment/cancel'
+      path: '/payment/cancel'
+      fullPath: '/payment/cancel'
+      preLoaderRoute: typeof PaymentCancelRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/payment/success': {
+      id: '/payment/success'
+      path: '/payment/success'
+      fullPath: '/payment/success'
+      preLoaderRoute: typeof PaymentSuccessRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/products/$slug': {
       id: '/products/$slug'
       path: '/products/$slug'
@@ -348,6 +388,8 @@ const rootRouteChildren: RootRouteChildren = {
   StoreRoute: StoreRoute,
   TrackOrderRoute: TrackOrderRoute,
   CollectionsSlugRoute: CollectionsSlugRoute,
+  PaymentCancelRoute: PaymentCancelRoute,
+  PaymentSuccessRoute: PaymentSuccessRoute,
   ProductsSlugRoute: ProductsSlugRoute,
   CollectionsIndexRoute: CollectionsIndexRoute,
   ApiPublicWireWebhookRoute: ApiPublicWireWebhookRoute,

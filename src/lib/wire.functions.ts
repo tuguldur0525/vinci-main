@@ -7,11 +7,12 @@ import { createServerFn } from "@tanstack/react-start";
 export const createWireCheckout = createServerFn({ method: "POST" })
   .inputValidator((data: { orderId: string; returnUrl: string }) => {
     if (!data?.orderId || typeof data.orderId !== "string") throw new Error("orderId is required");
-    if (!data?.returnUrl || !/^https?:\/\//.test(data.returnUrl)) throw new Error("Invalid return URL");
+    if (!data?.returnUrl || !/^https?:\/\//.test(data.returnUrl))
+      throw new Error("Invalid return URL");
     return data;
   })
   .handler(async ({ data }) => {
-    const apiKey = process.env["WIRE_API_KEY"];
+    const apiKey = process.env["WIRE_API_KEY"] ?? process.env["WIRE_SECRET_KEY"];
     if (!apiKey) throw new Error("Wire is not configured yet.");
 
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
@@ -36,6 +37,7 @@ export const createWireCheckout = createServerFn({ method: "POST" })
       body: JSON.stringify({
         amount: Math.round(Number(order.total) * 100), // MNT minor units
         currency: "MNT",
+        allowed_operators: apiKey.startsWith("sk_test_") ? ["sandbox"] : undefined,
         description: `Vinci Shoes order ${order.id.slice(0, 8).toUpperCase()}`,
         metadata: { order_id: order.id },
       }),
@@ -51,8 +53,8 @@ export const createWireCheckout = createServerFn({ method: "POST" })
       headers: { ...headers, "Idempotency-Key": `session_${order.id}` },
       body: JSON.stringify({
         payment_intent: intent.id,
-        success_url: data.returnUrl,
-        cancel_url: data.returnUrl,
+        success_url: `${data.returnUrl}/payment/success?order=${order.id}`,
+        cancel_url: `${data.returnUrl}/payment/cancel?order=${order.id}`,
       }),
     });
     if (!sessionRes.ok) {

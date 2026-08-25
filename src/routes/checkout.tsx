@@ -90,7 +90,7 @@ function Checkout() {
 
       if (payment === "wire") {
         const res = await startWire({
-          data: { orderId, returnUrl: `${window.location.origin}/account` },
+          data: { orderId, returnUrl: window.location.origin },
         });
         clear();
         if (res.url) {
@@ -143,7 +143,7 @@ function Checkout() {
   }
 
   return (
-    <div className="mx-auto max-w-[1200px] px-5 py-12 md:px-10 md:py-16">
+    <div className="mx-auto max-w-300 px-5 py-12 md:px-10 md:py-16">
       <h1 className="font-display text-5xl md:text-6xl">Checkout</h1>
 
       <div className="mt-10 grid gap-14 lg:grid-cols-[1.2fr_1fr]">
@@ -214,11 +214,7 @@ function Checkout() {
             disabled={submitting}
             className="eyebrow w-full bg-primary py-5 text-primary-foreground transition-colors hover:bg-ink disabled:opacity-60"
           >
-            {submitting
-              ? "Placing order…"
-              : payment === "wire"
-                ? "Place order & pay"
-                : "Place order"}
+            {submitting ? "Placing order…" : payment === "wire" ? "Pay now" : "Place order"}
           </button>
           <p className="text-xs text-muted-foreground">
             Pay on delivery, or online through Wire (QR and Mongolian bank apps). We call every
