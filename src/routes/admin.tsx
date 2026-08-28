@@ -3,6 +3,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { ChevronDown, Trash2 } from "lucide-react";
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
 import { supabase } from "@/integrations/supabase/client";
 import {
   adminProductsQuery,
@@ -15,6 +16,12 @@ import {
 import { formatMnt } from "@/lib/brand";
 import { useAuth } from "@/lib/useAuth";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+  type ChartConfig,
+} from "@/components/ui/chart";
 import {
   Select,
   SelectContent,
@@ -41,13 +48,20 @@ const STATUSES = ["new", "confirmed", "processing", "shipped", "completed", "can
 type OrderStatus = (typeof STATUSES)[number];
 const ORDER_RANGES = [
   { value: "1-day", label: "1 day", days: 1 },
-  { value: "7-day", label: "7 days", days: 7 },
+  { value: "week", label: "Week", days: 7 },
   { value: "month", label: "Month", days: 30 },
   { value: "all-time", label: "All time", days: null },
 ] as const;
 type OrderRange = (typeof ORDER_RANGES)[number]["value"];
 
 const SIZES = ["35", "36", "37", "38", "39", "40"];
+
+const revenueChartConfig = {
+  revenue: {
+    label: "Revenue",
+    color: "var(--color-primary)",
+  },
+} satisfies ChartConfig;
 
 function slugify(v: string) {
   return v
@@ -57,11 +71,17 @@ function slugify(v: string) {
     .replace(/(^-|-$)/g, "");
 }
 
+function localDateKey(date: Date) {
+  return [date.getFullYear(), date.getMonth() + 1, date.getDate()]
+    .map((part) => String(part).padStart(2, "0"))
+    .join("-");
+}
+
 function Admin() {
   const { loading, user, isAdmin } = useAuth();
   const navigate = useNavigate();
   const qc = useQueryClient();
-  const [orderRange, setOrderRange] = useState<OrderRange>("all-time");
+  const [orderRange, setOrderRange] = useState<OrderRange>("week");
 
   useEffect(() => {
     if (!loading && !user) navigate({ to: "/auth" });
@@ -125,6 +145,26 @@ function Admin() {
     .filter((o) => o.status !== "cancelled")
     .reduce((s, o) => s + Number(o.total), 0);
 
+  const revenueByDay = selectedRange.days
+    ? Array.from({ length: selectedRange.days }, (_, index) => {
+        const date = new Date();
+        date.setHours(0, 0, 0, 0);
+        date.setDate(date.getDate() - (selectedRange.days! - 1 - index));
+        const dateKey = localDateKey(date);
+        const dayRevenue = visibleOrders
+          .filter(
+            (order) =>
+              order.status !== "cancelled" && localDateKey(new Date(order.created_at)) === dateKey,
+          )
+          .reduce((sum, order) => sum + Number(order.total), 0);
+
+        return {
+          label: new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric" }).format(date),
+          revenue: dayRevenue,
+        };
+      })
+    : [];
+
   const lowStock = (products.data ?? []).flatMap((p) =>
     p.product_variants.filter((v) => v.stock_quantity <= 2).map((v) => ({ p, v })),
   );
@@ -140,6 +180,36 @@ function Admin() {
         <Stat label="Revenue" value={formatMnt(revenue)} />
         <Stat label="Low stock" value={String(lowStock.length)} />
       </div>
+
+      {revenueByDay.length > 1 && (
+        <section className="mt-10 border p-6">
+          <div className="mb-5 flex items-baseline justify-between gap-4">
+            <div>
+              <p className="eyebrow text-muted-foreground">Revenue</p>
+              <h2 className="mt-1 font-display text-2xl">Daily revenue</h2>
+            </div>
+            <span className="text-sm text-muted-foreground">{selectedRange.label}</span>
+          </div>
+          <ChartContainer config={revenueChartConfig} className="h-64 w-full aspect-auto">
+            <BarChart accessibilityLayer data={revenueByDay} margin={{ top: 8, right: 8, left: 8 }}>
+              <CartesianGrid vertical={false} />
+              <XAxis dataKey="label" tickLine={false} axisLine={false} tickMargin={8} />
+              <YAxis
+                tickLine={false}
+                axisLine={false}
+                tickMargin={8}
+                tickFormatter={(value) => formatMnt(value)}
+                width={72}
+              />
+              <ChartTooltip
+                cursor={false}
+                content={<ChartTooltipContent formatter={(value) => formatMnt(Number(value))} />}
+              />
+              <Bar dataKey="revenue" fill="var(--color-revenue)" radius={2} />
+            </BarChart>
+          </ChartContainer>
+        </section>
+      )}
 
       <Tabs defaultValue="orders" className="mt-12">
         <TabsList>
@@ -171,7 +241,14 @@ function Admin() {
             <div key={o.id} className="border p-6">
               <div className="flex flex-wrap items-center justify-between gap-4">
                 <div>
-                  <p className="eyebrow">#{o.id.slice(0, 8).toUpperCase()}</p>
+                  <p className="mt-1 py-2 text-xs text-muted-foreground font-bold">
+                    {" "}
+                    {new Intl.DateTimeFormat("en-US", {
+                      dateStyle: "medium",
+                      timeStyle: "short",
+                    }).format(new Date(o.created_at))}
+                  </p>
+                  <p className="eyebrow font-bold ">#{o.id.slice(0, 8).toUpperCase()}</p>
                   <p className="mt-1 text-sm">
                     {o.customer_name} · {o.phone}
                   </p>

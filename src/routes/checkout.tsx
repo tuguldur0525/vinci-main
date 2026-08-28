@@ -32,7 +32,7 @@ function Checkout() {
   const navigate = useNavigate();
   const [submitting, setSubmitting] = useState(false);
   const [done, setDone] = useState<string | null>(null);
-  const [payment, setPayment] = useState<"cod" | "wire">("cod");
+  const [payment, setPayment] = useState<"wire" | "cod">("wire");
   const startWire = useServerFn(createWireCheckout);
   const [form, setForm] = useState({
     customer_name: "",
@@ -178,8 +178,8 @@ function Checkout() {
             <div className="mt-3 grid gap-3 sm:grid-cols-2">
               {(
                 [
+                  { id: "wire", title: "Pay now", note: "QPay and Bank application" },
                   { id: "cod", title: "Pay on delivery", note: "Cash or card when we deliver" },
-                  { id: "wire", title: "Pay online — Wire", note: "QR code and bank apps" },
                 ] as const
               ).map((opt) => (
                 <button

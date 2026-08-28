@@ -244,7 +244,6 @@ export function TrackOrderForm({ embedded = false }: { embedded?: boolean }) {
           type="tel"
           inputMode="tel"
           autoComplete="tel"
-          required
           placeholder="Phone number used for the order"
           value={orderPhone}
           onChange={(e) => setOrderPhone(e.target.value)}
