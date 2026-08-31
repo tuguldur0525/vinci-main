@@ -16,6 +16,8 @@ import { CartDrawer } from "@/components/CartDrawer";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { Toaster } from "@/components/ui/sonner";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 
 function NotFoundComponent() {
   return (
@@ -142,6 +144,8 @@ function RootComponent() {
         </div>
         <CartDrawer />
         <Toaster position="bottom-right" />
+        <Analytics />
+        <SpeedInsights />
       </CartProvider>
     </QueryClientProvider>
   );
