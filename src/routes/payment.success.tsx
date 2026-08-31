@@ -1,4 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useEffect } from "react";
+import { useCart } from "@/lib/cart";
 
 export const Route = createFileRoute("/payment/success")({
   validateSearch: (search: Record<string, unknown>) => ({
@@ -12,6 +14,14 @@ export const Route = createFileRoute("/payment/success")({
 
 function PaymentSuccess() {
   const { order } = Route.useSearch();
+  const { clear } = useCart();
+
+  useEffect(() => {
+    if (order) {
+      clear();
+    }
+  }, [order, clear]);
+
   return (
     <div className="mx-auto max-w-xl px-5 py-32 text-center">
       <span className="eyebrow text-primary">Payment received</span>

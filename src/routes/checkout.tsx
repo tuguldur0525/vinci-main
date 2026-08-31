@@ -7,6 +7,7 @@ import { createWireCheckout } from "@/lib/wire.functions";
 import { useCart } from "@/lib/cart";
 import { formatMnt } from "@/lib/brand";
 import { useAuth } from "@/lib/useAuth";
+import { shouldClearCartAfterOrder } from "@/lib/checkout-cart-behavior";
 
 export const Route = createFileRoute("/checkout")({
   head: () => ({
@@ -92,14 +93,28 @@ function Checkout() {
         const res = await startWire({
           data: { orderId, returnUrl: window.location.origin },
         });
-        clear();
+
         if (res.url) {
           window.location.href = res.url;
           return;
         }
+
+        if (shouldClearCartAfterOrder({ paymentMethod: "wire", orderStatus: "paid" })) {
+          clear();
+        }
+
+        if (res.alreadyPaid) {
+          clear();
+          setDone(orderId);
+          return;
+        }
+
+        return;
       }
 
-      clear();
+      if (shouldClearCartAfterOrder({ paymentMethod: "cod", orderStatus: "created" })) {
+        clear();
+      }
       setDone(orderId);
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "We couldn't place your order.");

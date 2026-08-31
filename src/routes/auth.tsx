@@ -6,6 +6,7 @@ import { lovable } from "@/integrations/lovable";
 import { useAuth } from "@/lib/useAuth";
 import { Flower } from "@/components/Flower";
 import { formatMnt } from "@/lib/brand";
+import { shouldDisplayTrackedOrder } from "@/lib/order-tracking";
 
 export const Route = createFileRoute("/auth")({
   head: () => ({
@@ -32,7 +33,7 @@ function Auth() {
   const [orderReference, setOrderReference] = useState("");
   const [orderPhone, setOrderPhone] = useState("");
   const [trackingBusy, setTrackingBusy] = useState(false);
-  const [trackedOrder, setTrackedOrder] = useState<TrackedOrder | null>(null);
+  const [trackedOrders, setTrackedOrders] = useState<TrackedOrder[]>([]);
   const [trackingError, setTrackingError] = useState("");
   const { session } = useAuth();
   const navigate = useNavigate();
@@ -82,7 +83,7 @@ function Auth() {
   async function trackOrder(e: React.FormEvent) {
     e.preventDefault();
     setTrackingBusy(true);
-    setTrackedOrder(null);
+    setTrackedOrders([]);
     setTrackingError("");
 
     const reference = orderReference.trim().replace(/^#/, "");
@@ -102,10 +103,16 @@ function Auth() {
       order_reference: reference,
       order_phone: phone,
     });
-    if (error || !data?.[0]) {
+    if (error || !data?.length) {
       setTrackingError("We couldn't find that order. Check the number and try again.");
     } else {
-      setTrackedOrder(data[0]);
+      const orders = (data as TrackedOrder[]).filter((order) =>
+        shouldDisplayTrackedOrder(order.status),
+      );
+      setTrackedOrders(orders);
+      if (!orders.length) {
+        setTrackingError("No active orders found for that phone number.");
+      }
     }
     setTrackingBusy(false);
   }
@@ -177,13 +184,13 @@ export function TrackOrderForm({ embedded = false }: { embedded?: boolean }) {
   const [orderReference, setOrderReference] = useState("");
   const [orderPhone, setOrderPhone] = useState("");
   const [trackingBusy, setTrackingBusy] = useState(false);
-  const [trackedOrder, setTrackedOrder] = useState<TrackedOrder | null>(null);
+  const [trackedOrders, setTrackedOrders] = useState<TrackedOrder[]>([]);
   const [trackingError, setTrackingError] = useState("");
 
   async function trackOrder(e: React.FormEvent) {
     e.preventDefault();
     setTrackingBusy(true);
-    setTrackedOrder(null);
+    setTrackedOrders([]);
     setTrackingError("");
 
     const reference = orderReference.trim().replace(/^#/, "");
@@ -203,10 +210,16 @@ export function TrackOrderForm({ embedded = false }: { embedded?: boolean }) {
       order_reference: reference,
       order_phone: phone,
     });
-    if (error || !data?.[0]) {
+    if (error || !data?.length) {
       setTrackingError("We couldn't find that order. Check the number and try again.");
     } else {
-      setTrackedOrder(data[0]);
+      const orders = (data as TrackedOrder[]).filter((order) =>
+        shouldDisplayTrackedOrder(order.status),
+      );
+      setTrackedOrders(orders);
+      if (!orders.length) {
+        setTrackingError("No active orders found for that phone number.");
+      }
     }
     setTrackingBusy(false);
   }
@@ -259,7 +272,13 @@ export function TrackOrderForm({ embedded = false }: { embedded?: boolean }) {
       </form>
 
       {trackingError && <p className="mt-4 text-sm text-destructive">{trackingError}</p>}
-      {trackedOrder && <TrackedOrderResult order={trackedOrder} />}
+      {trackedOrders.length > 0 && (
+        <div className="mt-6 space-y-4">
+          {trackedOrders.map((order) => (
+            <TrackedOrderResult key={order.order_reference} order={order} />
+          ))}
+        </div>
+      )}
     </section>
   );
 }

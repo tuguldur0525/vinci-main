@@ -30,11 +30,11 @@ AS $$
     OR (
       nullif(regexp_replace(track_order.order_phone, '[^0-9]', '', 'g'), '') IS NOT NULL
       AND regexp_replace(o.phone, '[^0-9]', '', 'g') = regexp_replace(track_order.order_phone, '[^0-9]', '', 'g')
+      AND o.status <> 'completed'
     )
   )
   GROUP BY o.id, o.status, o.created_at, o.total
-  ORDER BY o.created_at DESC
-  LIMIT 1;
+  ORDER BY o.created_at DESC;
 $$;
 
 REVOKE ALL ON FUNCTION public.track_order(text, text) FROM public;
